@@ -1,6 +1,16 @@
 import * as THREE from "/build/three.module.js";
 import vertexShader from "./shaders/galaxyVertex.js";
 import fragmentShader from "./shaders/galaxyFragment.js";
+import gsap from "/gsap/all.js";
+
+//loading page
+const loading = document.querySelector("#loading");
+
+// hide loading page
+window.addEventListener("load", () => {
+  gsap.fromTo(loading, { opacity: 1 }, { opacity: 0, duration: 0.5 });
+  loading.style.display = "none";
+});
 
 // canvas
 const canvas = document.querySelector(".tech-webgl");

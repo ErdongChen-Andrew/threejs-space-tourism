@@ -4,6 +4,15 @@ import gsap from "/gsap/all.js";
 const tabList = document.querySelector("[role='tablist']");
 const tabs = document.querySelectorAll("[role='tab']");
 
+//loading page
+const loading = document.querySelector("#loading");
+
+// hide loading page
+window.addEventListener("load", () => {
+  gsap.fromTo(loading, { opacity: 1 }, { opacity: 0, duration: 0.5 });
+  loading.style.display = "none";
+});
+
 // canvas
 const canvas = document.querySelector(".destination-webgl");
 
