@@ -4,11 +4,9 @@ import gsap from "/gsap/all.js";
 //loading page
 const loading = document.querySelector("#loading");
 
-// hide loading page
-window.addEventListener("load", () => {
-  gsap.fromTo(loading, { opacity: 1 }, { opacity: 0, duration: 0.5 });
-  loading.style.display = "none";
-});
+// loading persentage
+const loadingPersentage = document.querySelector("#loading-persentage");
+const fadeOutDuration = 1; //in seconds
 
 // canvas
 const canvas = document.querySelector(".earth-webgl");
@@ -19,8 +17,24 @@ const sizes = {
   height: window.innerHeight,
 };
 
+// create loading manager for loading prograss
+const loadingManager = new THREE.LoadingManager(
+  // hide loading page after loaded
+  () => {
+    gsap.to(loading, { opacity: 0, duration: fadeOutDuration });
+    setTimeout(() => {
+      loading.style.display = "none";
+    }, fadeOutDuration * 1000);
+  },
+  // loading prograss
+  (itemUrl, itemsLoaded, itemsTotal) => {
+    const persentage = Math.round((itemsLoaded / itemsTotal) * 100);
+    loadingPersentage.innerHTML = persentage + "%";
+  }
+);
+
 // textures
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new THREE.TextureLoader(loadingManager);
 const mapTexture = textureLoader.load("./texture/earth/8k_earth_nightmap.jpeg");
 const cloudAlpha = textureLoader.load("./texture/earth/2k_earth_clouds.jpeg");
 const starsTexture = textureLoader.load(
@@ -109,10 +123,6 @@ const handleMediaQuery = (e) => {
 
 handleMediaQuery(mediaQuery);
 
-// control
-// const control = new OrbitControls(camera, canvas);
-// control.enableDamping = true;
-
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
@@ -139,13 +149,6 @@ const tick = () => {
   cloudMesh.rotation.y = elapsedTime * 0.02;
   earthMesh.rotation.y = elapsedTime * 0.01;
   starsMesh.rotation.y = -elapsedTime * 0.005;
-
-  // directionalLight.position.x = Math.cos(elapsedTime*0.1) * 3;
-  // directionalLight.position.z = Math.sin(elapsedTime*0.1) * 3;
-  // directionalLight.lookAt(sphere);
-
-  // update control
-  // control.update();
 
   renderer.render(scene, camera);
 

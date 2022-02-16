@@ -7,12 +7,19 @@
 #loading {
   position: fixed;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100vh;
   background-color: black;
   z-index: 999;
+}
+
+#loading > p {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 2rem;
 }
 
 /* Three.js canvas elements */

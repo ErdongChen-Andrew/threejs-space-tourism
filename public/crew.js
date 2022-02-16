@@ -6,11 +6,9 @@ import fragmentShader from "./shaders/fragment.js";
 //loading page
 const loading = document.querySelector("#loading");
 
-// hide loading page
-window.addEventListener("load", () => {
-  gsap.fromTo(loading, { opacity: 1 }, { opacity: 0, duration: 0.5 });
-  loading.style.display = "none";
-});
+// loading persentage
+const loadingPersentage = document.querySelector("#loading-persentage");
+const fadeOutDuration = 1; //in seconds
 
 // canvas
 const canvas = document.querySelector(".crew-webgl");
@@ -21,8 +19,24 @@ const sizes = {
   height: window.innerHeight,
 };
 
+// create loading manager for loading prograss
+const loadingManager = new THREE.LoadingManager(
+  // hide loading page after loaded
+  () => {
+    gsap.to(loading, { opacity: 0, duration: fadeOutDuration });
+    setTimeout(() => {
+      loading.style.display = "none";
+    }, fadeOutDuration * 1000);
+  },
+  // loading prograss
+  (itemUrl, itemsLoaded, itemsTotal) => {
+    const persentage = Math.round((itemsLoaded / itemsTotal) * 100);
+    loadingPersentage.innerHTML = persentage + "%";
+  }
+);
+
 // textures
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new THREE.TextureLoader(loadingManager);
 const cloudAlpha = textureLoader.load("./texture/LargeClouds.jpeg");
 
 // scene

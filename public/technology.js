@@ -6,10 +6,16 @@ import gsap from "/gsap/all.js";
 //loading page
 const loading = document.querySelector("#loading");
 
+// loading persentage
+const loadingPersentage = document.querySelector("#loading-persentage");
+const fadeOutDuration = 1; //in seconds
+
 // hide loading page
 window.addEventListener("load", () => {
-  gsap.fromTo(loading, { opacity: 1 }, { opacity: 0, duration: 0.5 });
-  loading.style.display = "none";
+  gsap.to(loading, { opacity: 0, duration: fadeOutDuration });
+  setTimeout(() => {
+    loading.style.display = "none";
+  }, fadeOutDuration * 1000);
 });
 
 // canvas
@@ -109,7 +115,10 @@ const generateGalaxy = () => {
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
   geometry.setAttribute("aScale", new THREE.BufferAttribute(scales, 1));
-  geometry.setAttribute("aRandomness", new THREE.BufferAttribute(randomness, 3));
+  geometry.setAttribute(
+    "aRandomness",
+    new THREE.BufferAttribute(randomness, 3)
+  );
 
   /**
    * Material
